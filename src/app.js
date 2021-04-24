@@ -10,7 +10,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/students", (req, res) => {
-  res.send("Hello");
+  res.send("Hello from the server");
 });
 
 app.listen(port, () => {
