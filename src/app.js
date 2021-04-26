@@ -46,18 +46,63 @@ app.get("/students", async (req, res) => {
   }
 });
 
-//Read student by _id
-app.get("/students/:id", async (req, res) => {
+// //Read student by _id
+// app.get("/students/:id", async (req, res) => {
+//   try {
+//     const _id = req.params.id;
+//     const studentData = await Student.findById(_id);
+//     if (!studentData) {
+//       return res.status(404).send("Student Not Found");
+//     } else {
+//       res.send(studentData);
+//     }
+//   } catch (err) {
+//     res.status(500).send(err);
+//   }
+// });
+
+//Read student by name
+app.get("/students/:name", async (req, res) => {
   try {
-    const _id = req.params.id;
-    const studentData = await Student.findById(_id);
+    const name = req.params.name;
+    const studentData = await Student.findOne(name).select(name);
     if (!studentData) {
       return res.status(404).send("Student Not Found");
     } else {
-      return res.send(studentData);
+      res.send(studentData);
     }
   } catch (err) {
-    res.send(500).send(err);
+    res.status(500).send(err);
+  }
+});
+
+//update student by id
+
+app.patch("/students/:id", async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const updateStudent = await Student.findByIdAndUpdate(_id, req.body, {
+      new: true,
+    });
+    res.send(updateStudent);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+//Delete student by id
+
+app.delete("/students/:id", async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const deleteStudent = await Student.findByIdAndDelete(_id);
+    if (!deleteStudent) {
+      res.status(404).send();
+    } else {
+      res.send(deleteStudent);
+    }
+  } catch (err) {
+    res.status(500).send(err);
   }
 });
 
